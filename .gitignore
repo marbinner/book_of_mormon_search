@@ -1,4 +1,5 @@
 .env
+.sesskey
 __pycache__/
 *.pyc
 *.pyo
