@@ -8,11 +8,11 @@ class ScriptureSearchEngine:
         self.data_dir = Path(data_dir)
 
         # Load Book of Mormon data
-        self.bom_embeddings = np.load(self.data_dir / "bom_embeddings.npz")["embeddings"]
+        self.bom_embeddings = np.load(self.data_dir / "bom_embeddings.npz", allow_pickle=True)["embeddings"]
         self.bom_metadata = pd.read_csv(self.data_dir / "bom_metadata.csv")
 
         # Load King James Bible data
-        self.kjb_embeddings = np.load(self.data_dir / "kjb_embeddings.npz")["embeddings"]
+        self.kjb_embeddings = np.load(self.data_dir / "kjb_embeddings.npz", allow_pickle=True)["embeddings"]
         self.kjb_metadata = pd.read_csv(self.data_dir / "kjb_metadata.csv")
 
         # Normalize embeddings once for faster cosine similarity (dot product of normalized vectors)
