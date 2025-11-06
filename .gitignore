@@ -1,6 +1,7 @@
 .env
 .sesskey
 data/*.npz
+data/*.npy
 __pycache__/
 *.pyc
 *.pyo
