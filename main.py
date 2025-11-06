@@ -1,25 +1,10 @@
 from fasthtml.common import *
 from src.search import ScriptureSearchEngine
-from src.download_data import ensure_data_files
-
-# Download embedding files if they don't exist (Railway deployment)
-try:
-    ensure_data_files()
-except Exception as e:
-    print(f"ERROR downloading files: {e}")
-    import traceback
-    traceback.print_exc()
 
 # Initialize the search engine (this will load once at startup)
-try:
-    print("Loading search engine...")
-    search_engine = ScriptureSearchEngine()
-    print("Search engine ready!")
-except Exception as e:
-    print(f"ERROR loading search engine: {e}")
-    import traceback
-    traceback.print_exc()
-    raise
+print("Loading search engine...")
+search_engine = ScriptureSearchEngine()
+print("Search engine ready!")
 
 app, rt = fast_app(
     hdrs=(

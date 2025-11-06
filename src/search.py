@@ -7,35 +7,17 @@ class ScriptureSearchEngine:
     def __init__(self, data_dir: str = "data"):
         self.data_dir = Path(data_dir)
 
-        # Load Book of Mormon data with memory mapping (doesn't load into RAM)
-        bom_npz = np.load(self.data_dir / "bom_embeddings.npz", allow_pickle=True, mmap_mode='r')
-        self.bom_embeddings = bom_npz["embeddings"]
+        # Load Book of Mormon data
+        self.bom_embeddings = np.load(self.data_dir / "bom_embeddings.npz", allow_pickle=True)["embeddings"]
         self.bom_metadata = pd.read_csv(self.data_dir / "bom_metadata.csv")
 
-        # Load King James Bible data with memory mapping
-        kjb_npz = np.load(self.data_dir / "kjb_embeddings.npz", allow_pickle=True, mmap_mode='r')
-        self.kjb_embeddings = kjb_npz["embeddings"]
+        # Load King James Bible data
+        self.kjb_embeddings = np.load(self.data_dir / "kjb_embeddings.npz", allow_pickle=True)["embeddings"]
         self.kjb_metadata = pd.read_csv(self.data_dir / "kjb_metadata.csv")
 
-        # Load pre-normalized embeddings (faster and uses less memory)
-        bom_norm_path = self.data_dir / "bom_embeddings_normalized.npz"
-        kjb_norm_path = self.data_dir / "kjb_embeddings_normalized.npz"
-
-        if bom_norm_path.exists():
-            bom_norm_npz = np.load(bom_norm_path, mmap_mode='r')
-            self.bom_embeddings = bom_norm_npz["embeddings"]
-        else:
-            # Fallback: normalize on the fly (slower, uses more memory)
-            print("Normalizing BOM embeddings...")
-            self.bom_embeddings = self.bom_embeddings / np.linalg.norm(self.bom_embeddings, axis=1, keepdims=True)
-
-        if kjb_norm_path.exists():
-            kjb_norm_npz = np.load(kjb_norm_path, mmap_mode='r')
-            self.kjb_embeddings = kjb_norm_npz["embeddings"]
-        else:
-            # Fallback: normalize on the fly (slower, uses more memory)
-            print("Normalizing KJB embeddings...")
-            self.kjb_embeddings = self.kjb_embeddings / np.linalg.norm(self.kjb_embeddings, axis=1, keepdims=True)
+        # Normalize embeddings once for faster cosine similarity (dot product of normalized vectors)
+        self.bom_embeddings = self.bom_embeddings / np.linalg.norm(self.bom_embeddings, axis=1, keepdims=True)
+        self.kjb_embeddings = self.kjb_embeddings / np.linalg.norm(self.kjb_embeddings, axis=1, keepdims=True)
 
         print(f"Loaded {len(self.bom_metadata)} Book of Mormon verses")
         print(f"Loaded {len(self.kjb_metadata)} King James Bible verses")

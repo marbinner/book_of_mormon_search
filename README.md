@@ -10,7 +10,7 @@ Semantic search engine for the Book of Mormon and King James Bible. Search 37,00
 - Fast search with optimized embeddings
 - Search statistics and similarity scores
 
-## Local Development
+## Setup
 
 ```bash
 # Install dependencies
@@ -25,17 +25,8 @@ uv run python main.py
 
 Visit `http://localhost:5001`
 
-## Deploy to Railway
-
-1. Push to GitHub
-2. Go to [railway.app](https://railway.app/)
-3. Deploy from GitHub repo
-4. Add environment variable: `OPENROUTER_API_KEY`
-5. Done!
-
 ## Tech Stack
 
 - **FastHTML** - Web framework
 - **OpenRouter** - Embeddings API
 - **NumPy** - Fast vector operations
-- **Git LFS** - Large file storage
