@@ -17,26 +17,25 @@ class ScriptureSearchEngine:
         self.kjb_embeddings = kjb_npz["embeddings"]
         self.kjb_metadata = pd.read_csv(self.data_dir / "kjb_metadata.csv")
 
-        # Pre-normalize embeddings and save to disk to avoid doing it on each search
-        # Check if normalized versions exist
-        bom_norm_path = self.data_dir / "bom_embeddings_normalized.npy"
-        kjb_norm_path = self.data_dir / "kjb_embeddings_normalized.npy"
+        # Load pre-normalized embeddings (faster and uses less memory)
+        bom_norm_path = self.data_dir / "bom_embeddings_normalized.npz"
+        kjb_norm_path = self.data_dir / "kjb_embeddings_normalized.npz"
 
-        if not bom_norm_path.exists():
-            print("Normalizing BOM embeddings (one-time setup)...")
-            bom_normalized = self.bom_embeddings / np.linalg.norm(self.bom_embeddings, axis=1, keepdims=True)
-            np.save(bom_norm_path, bom_normalized)
-            self.bom_embeddings = bom_normalized
+        if bom_norm_path.exists():
+            bom_norm_npz = np.load(bom_norm_path, mmap_mode='r')
+            self.bom_embeddings = bom_norm_npz["embeddings"]
         else:
-            self.bom_embeddings = np.load(bom_norm_path, mmap_mode='r')
+            # Fallback: normalize on the fly (slower, uses more memory)
+            print("Normalizing BOM embeddings...")
+            self.bom_embeddings = self.bom_embeddings / np.linalg.norm(self.bom_embeddings, axis=1, keepdims=True)
 
-        if not kjb_norm_path.exists():
-            print("Normalizing KJB embeddings (one-time setup)...")
-            kjb_normalized = self.kjb_embeddings / np.linalg.norm(self.kjb_embeddings, axis=1, keepdims=True)
-            np.save(kjb_norm_path, kjb_normalized)
-            self.kjb_embeddings = kjb_normalized
+        if kjb_norm_path.exists():
+            kjb_norm_npz = np.load(kjb_norm_path, mmap_mode='r')
+            self.kjb_embeddings = kjb_norm_npz["embeddings"]
         else:
-            self.kjb_embeddings = np.load(kjb_norm_path, mmap_mode='r')
+            # Fallback: normalize on the fly (slower, uses more memory)
+            print("Normalizing KJB embeddings...")
+            self.kjb_embeddings = self.kjb_embeddings / np.linalg.norm(self.kjb_embeddings, axis=1, keepdims=True)
 
         print(f"Loaded {len(self.bom_metadata)} Book of Mormon verses")
         print(f"Loaded {len(self.kjb_metadata)} King James Bible verses")

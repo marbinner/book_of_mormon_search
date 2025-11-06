@@ -38,8 +38,8 @@ def ensure_data_files():
     files = [
         (f"{BASE_URL}/bom_embeddings.npz", data_dir / "bom_embeddings.npz"),
         (f"{BASE_URL}/kjb_embeddings.npz", data_dir / "kjb_embeddings.npz"),
-        (f"{BASE_URL}/bom_embeddings_normalized.npy", data_dir / "bom_embeddings_normalized.npy"),
-        (f"{BASE_URL}/kjb_embeddings_normalized.npy", data_dir / "kjb_embeddings_normalized.npy"),
+        (f"{BASE_URL}/bom_embeddings_normalized.npz", data_dir / "bom_embeddings_normalized.npz"),
+        (f"{BASE_URL}/kjb_embeddings_normalized.npz", data_dir / "kjb_embeddings_normalized.npz"),
     ]
 
     for url, destination in files:
