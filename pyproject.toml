@@ -1,0 +1,14 @@
+[project]
+name = "book-of-mormon-search"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=2.3.4",
+    "pandas>=2.3.3",
+    "python-dotenv>=1.2.1",
+    "python-fasthtml>=0.12.33",
+    "requests>=2.32.5",
+    "scikit-learn>=1.7.2",
+]
