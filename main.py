@@ -2,7 +2,7 @@ from fasthtml.common import *
 from src.search import ScriptureSearchEngine
 from src.download_data import ensure_data_files
 
-# Download embedding files if they don't exist (for Railway deployment)
+# Download embedding files if they don't exist (Railway deployment)
 ensure_data_files()
 
 # Initialize the search engine (this will load once at startup)
